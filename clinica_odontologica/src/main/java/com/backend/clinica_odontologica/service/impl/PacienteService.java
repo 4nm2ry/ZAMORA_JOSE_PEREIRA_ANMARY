@@ -5,6 +5,7 @@ import com.backend.clinica_odontologica.dto.entrada.paciente.PacienteEntradaDto;
 import com.backend.clinica_odontologica.dto.modificacion.PacienteModificacionEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.paciente.PacienteSalidaDto;
 import com.backend.clinica_odontologica.entity.Paciente;
+import com.backend.clinica_odontologica.exceptions.ResourceNotFoundException;
 import com.backend.clinica_odontologica.service.IPacienteService;
 import com.backend.clinica_odontologica.utils.JsonPrinter;
 import org.slf4j.Logger;
@@ -14,7 +15,6 @@ import org.modelmapper.ModelMapper;
 
 import java.util.List;
 
-public class PacienteService {
     @Service
     public class PacienteService implements IPacienteService {
 
@@ -79,13 +79,13 @@ public class PacienteService {
             return pacienteSalidaDto;
         }
         @Override
-        public void eliminarPaciente(Long id) {
+        public void eliminarPaciente(Long id) throws ResourceNotFoundException {
             if (pacienteRepository.findById(id).orElse(null) != null) {
                 pacienteRepository.deleteById(id);
                 LOGGER.warn("Se ha eliminado el paciente con id: {}", id);
             } else {
                 LOGGER.error("No se ha encontrado el paciente con id {}", id);
-                //excepcion a lanzar aqui
+                throw new ResourceNotFoundException("No se ha encontrado el paciente con id " + id);
             }
 
         }
@@ -106,4 +106,4 @@ public class PacienteService {
 
     }
 
-}
+

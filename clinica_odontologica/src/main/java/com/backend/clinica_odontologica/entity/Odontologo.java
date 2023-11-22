@@ -16,7 +16,7 @@ public class Odontologo {
     @Column(length = 50)
     private String apellido;
 
-    public Odontologo(, String matricula, String nombre, String apellido) {
+    public Odontologo(String matricula, String nombre, String apellido) {
         this.matricula = matricula;
         this.nombre = nombre;
         this.apellido = apellido;
