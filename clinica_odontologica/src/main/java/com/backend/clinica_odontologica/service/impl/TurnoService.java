@@ -3,8 +3,12 @@ package com.backend.clinica_odontologica.service.impl;
 import com.backend.clinica_odontologica.Repository.TurnoRepository;
 import com.backend.clinica_odontologica.dto.entrada.turno.TurnoEntradaDto;
 import com.backend.clinica_odontologica.dto.modificacion.TurnoModificacionEntradaDto;
+import com.backend.clinica_odontologica.dto.salida.paciente.PacienteSalidaDto;
 import com.backend.clinica_odontologica.dto.salida.turno.TurnoSalidaDto;
+import com.backend.clinica_odontologica.entity.Paciente;
+import com.backend.clinica_odontologica.entity.Turno;
 import com.backend.clinica_odontologica.service.ITurnoService;
+import com.backend.clinica_odontologica.utils.JsonPrinter;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +38,13 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public TurnoSalidaDto registrarTurno(TurnoEntradaDto turno) {
-        return null;
+        LOGGER.info("TurnoEntradaDto: " + JsonPrinter.toString(turno));
+        Turno turnoEntidad = modelMapper.map(turno, Turno.class);
+        Turno turnoAPersistir = turnoRepository.save(turnoEntidad);
+        TurnoSalidaDto turnoSalidaDto = modelMapper.map(turnoAPersistir, TurnoSalidaDto.class);
+        LOGGER.info("TurnoSalidaDto: " + JsonPrinter.toString(turnoSalidaDto));
+        return turnoSalidaDto;
+
     }
 
     @Override
