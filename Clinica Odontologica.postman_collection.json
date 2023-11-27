@@ -1,0 +1,117 @@
+{
+	"info": {
+		"_postman_id": "af673453-b31c-4c3e-842c-f0a01d137e0f",
+		"name": "Clinica Odontologica",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28197061"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/odontologos/registrar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"matricula\":\"123451231231236\",\r\n\"nombre\":\"Anmary\",\r\n\"apellido\":\"Pererira\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/odontologos/registrar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"odontologos",
+						"registrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/paciente/registrar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"nombre\":\"Luis\",\r\n\"apellido\":\"Perez\",\r\n\"dni\":\"258874196\",\r\n\"fechaIngreso\":\"2023-11-27\",\r\n\"domicilioEntradaDto\":{\r\n    \"calle\":\"Armando Moock\",\r\n    \"numero\":100,\r\n    \"localidad\":\"Macul\",\r\n    \"provincia\":\"RM\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pacientes/registrar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pacientes",
+						"registrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/turno/registrar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"nombre\":\"Luis\",\r\n\"apellido\":\"Perez\",\r\n\"dni\":\"258874196\",\r\n\"fechaIngreso\":\"2023-11-27\",\r\n\"domicilioEntradaDto\":{\r\n    \"calle\":\"Armando Moock\",\r\n    \"numero\":100,\r\n    \"localidad\":\"Macul\",\r\n    \"provincia\":\"RM\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/turno/registrar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"turno",
+						"registrar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/odontologos/listar",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/odontologos/listar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"odontologos",
+						"listar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/odontologos")
+@CrossOrigin(origins = "http://localhost:63342")
 public class OdontologoController {
     private IOdontologoService odontologoService;
 
