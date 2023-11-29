@@ -5,6 +5,7 @@ import com.backend.clinica_odontologica.dto.entrada.paciente.PacienteEntradaDto;
 import com.backend.clinica_odontologica.dto.modificacion.PacienteModificacionEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.paciente.PacienteSalidaDto;
 import com.backend.clinica_odontologica.entity.Paciente;
+import com.backend.clinica_odontologica.exceptions.BadRequestException;
 import com.backend.clinica_odontologica.exceptions.ResourceNotFoundException;
 import com.backend.clinica_odontologica.service.IPacienteService;
 import com.backend.clinica_odontologica.utils.JsonPrinter;
@@ -28,13 +29,19 @@ import java.util.List;
             this.modelMapper = modelMapper;
             configureMapping();
         }
-        public PacienteSalidaDto registrarPaciente(PacienteEntradaDto paciente){
+        public PacienteSalidaDto registrarPaciente(PacienteEntradaDto paciente) throws BadRequestException {
             LOGGER.info("PacienteEntradaDto: " + JsonPrinter.toString(paciente));
             Paciente pacienteEntidad = modelMapper.map(paciente, Paciente.class);
             Paciente pacienteAPersistir = pacienteRepository.save(pacienteEntidad);
-            PacienteSalidaDto pacienteSalidaDto = modelMapper.map(pacienteAPersistir, PacienteSalidaDto.class);
-            LOGGER.info("PacienteSalidaDto: " + JsonPrinter.toString(pacienteSalidaDto));
-            return pacienteSalidaDto;
+            if (pacienteAPersistir != null){
+                PacienteSalidaDto pacienteSalidaDto = modelMapper.map(pacienteAPersistir, PacienteSalidaDto.class);
+                LOGGER.info("PacienteSalidaDto: " + JsonPrinter.toString(pacienteSalidaDto));
+                return pacienteSalidaDto;
+            }
+          else{
+                LOGGER.error("No se ha registrado el paciente ");
+                throw new BadRequestException("No se ha registrado el paciente");
+            }
         }
         public List<PacienteSalidaDto> listarPacientes(){
             List<PacienteSalidaDto> pacientesSalidaDto = pacienteRepository.findAll()
@@ -102,7 +109,6 @@ import java.util.List;
                     .addMappings(mapper -> mapper.map(PacienteModificacionEntradaDto::getDomicilioModificacionEntradaDto, Paciente::setDomicilio));
 
         }
-
 
     }
 

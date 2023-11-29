@@ -5,6 +5,8 @@ import com.backend.clinica_odontologica.dto.entrada.odontologo.OdontologoEntrada
 import com.backend.clinica_odontologica.dto.modificacion.OdontologoModificacionEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.odontologo.OdontologoSalidaDto;
 import com.backend.clinica_odontologica.entity.Odontologo;
+import com.backend.clinica_odontologica.exceptions.BadRequestException;
+import com.backend.clinica_odontologica.exceptions.ResourceNotFoundException;
 import com.backend.clinica_odontologica.service.IOdontologoService;
 import com.backend.clinica_odontologica.utils.JsonPrinter;
 import net.bytebuddy.asm.Advice;
@@ -31,16 +33,21 @@ public class OdontologoService implements IOdontologoService {
     }
 
     @Override
-    public OdontologoSalidaDto registrarOdontologo(OdontologoEntradaDto odontologo) {
+    public OdontologoSalidaDto registrarOdontologo(OdontologoEntradaDto odontologo) throws BadRequestException{
 
         LOGGER.info("OdontologoEntradaDto: " + JsonPrinter.toString(odontologo));
         Odontologo odontologoEntidad = modelMapper.map(odontologo, Odontologo.class);
 
         Odontologo odontologoAPersistir = odontologoRepository.save(odontologoEntidad);
         //transformamos la entidad obtenida en salidaDto
-        OdontologoSalidaDto odontologoSalidaDto = modelMapper.map(odontologoAPersistir, OdontologoSalidaDto.class);
-        LOGGER.info("OdontologoSalidaDto: " + JsonPrinter.toString(odontologoSalidaDto));
-        return odontologoSalidaDto;
+        if (odontologoAPersistir != null) {
+            OdontologoSalidaDto odontologoSalidaDto = modelMapper.map(odontologoAPersistir, OdontologoSalidaDto.class);
+            LOGGER.info("OdontologoSalidaDto: " + JsonPrinter.toString(odontologoSalidaDto));
+            return odontologoSalidaDto;
+        }
+        else{ LOGGER.error("No se ha registrado el odontologo ");
+            throw new BadRequestException("No se ha registrado el odontologo");}
+
 
     }
 
