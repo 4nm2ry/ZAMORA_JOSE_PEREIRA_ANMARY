@@ -3,6 +3,7 @@ package com.backend.clinica_odontologica.controller;
 import com.backend.clinica_odontologica.dto.entrada.odontologo.OdontologoEntradaDto;
 import com.backend.clinica_odontologica.dto.modificacion.OdontologoModificacionEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.odontologo.OdontologoSalidaDto;
+import com.backend.clinica_odontologica.exceptions.BadRequestException;
 import com.backend.clinica_odontologica.service.IOdontologoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class OdontologoController {
         this.odontologoService = odontologoService;
     }
     @PostMapping("/registrar")
-    public ResponseEntity<OdontologoSalidaDto> registrarOdontologo(@RequestBody @Valid OdontologoEntradaDto odontologo) {
+    public ResponseEntity<OdontologoSalidaDto> registrarOdontologo(@RequestBody @Valid OdontologoEntradaDto odontologo) throws BadRequestException {
         return new ResponseEntity<>(odontologoService.registrarOdontologo(odontologo), HttpStatus.CREATED);
     }
 
