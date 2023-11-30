@@ -12,6 +12,7 @@ import com.backend.clinica_odontologica.entity.Odontologo;
 import com.backend.clinica_odontologica.entity.Paciente;
 import com.backend.clinica_odontologica.entity.Turno;
 import com.backend.clinica_odontologica.exceptions.BadRequestException;
+import com.backend.clinica_odontologica.exceptions.ResourceNotFoundException;
 import com.backend.clinica_odontologica.service.ITurnoService;
 import com.backend.clinica_odontologica.utils.JsonPrinter;
 import org.modelmapper.ModelMapper;
@@ -40,7 +41,12 @@ public class TurnoService implements ITurnoService {
 
     @Override
     public List<TurnoSalidaDto> listarTurnos() {
-        return null;
+        List<TurnoSalidaDto> turnosSalidaDto = turnoRepository.findAll()
+                .stream()
+                .map(turno -> modelMapper.map(turno, TurnoSalidaDto.class))
+                .toList();
+        LOGGER.info("Listado de todos los turnos: {}", turnosSalidaDto);
+        return turnosSalidaDto;
     }
 
     @Override
@@ -68,20 +74,51 @@ public class TurnoService implements ITurnoService {
 
     }
 
-
     @Override
     public TurnoSalidaDto buscarTurnoPorId(Long id) {
-        return null;
+        Turno turnoBuscado = turnoRepository.findById(id).orElse(null);
+        TurnoSalidaDto turnoEncontrado = null;
+
+        if(turnoBuscado != null){
+            turnoEncontrado =  modelMapper.map(turnoBuscado, TurnoSalidaDto.class);
+            LOGGER.info("Turno encontrado: {}", turnoEncontrado);
+        } else LOGGER.error("El id no se encuentra registrado en la base de datos");
+
+        return turnoEncontrado;
     }
 
     @Override
-    public void eliminarTurno(Long id) {
-
+    public void eliminarTurno(Long id) throws ResourceNotFoundException {
+        if (turnoRepository.findById(id).orElse(null) != null) {
+            turnoRepository.deleteById(id);
+            LOGGER.warn("Se ha eliminado el turno con id: {}", id);
+        } else {
+            LOGGER.error("No se ha encontrado el turno con id {}", id);
+            throw new ResourceNotFoundException("No se ha encontrado el turno con id " + id);
+        }
     }
 
     @Override
     public TurnoSalidaDto actualizarTurno(TurnoModificacionEntradaDto turnoModificacionEntradaDto) {
-        return null;
+        Turno turnoRecibido = modelMapper.map(turnoModificacionEntradaDto, Turno.class);
+        Turno turnoAActualizar = turnoRepository.findById(turnoRecibido.getId()).orElse(null);
+
+        TurnoSalidaDto turnoSalidaDto = null;
+
+        if (turnoAActualizar != null) {
+            turnoAActualizar = turnoRecibido;
+            turnoRepository.save(turnoAActualizar);
+
+            turnoSalidaDto = modelMapper.map(turnoAActualizar, TurnoSalidaDto.class);
+            LOGGER.warn("Turno actualizado: {}", JsonPrinter.toString(turnoSalidaDto));
+
+        } else {
+            LOGGER.error("No fue posible actualizar el turno porque no se encuentra en nuestra base de datos");
+            //lanzar excepcion correspondiente
+        }
+
+
+        return turnoSalidaDto;
     }
 
     private void configureMapping() {
