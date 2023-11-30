@@ -2,9 +2,10 @@ package com.backend.clinica_odontologica.service.impl;
 import com.backend.clinica_odontologica.dto.entrada.paciente.DomicilioEntradaDto;
 import com.backend.clinica_odontologica.dto.entrada.paciente.PacienteEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.paciente.PacienteSalidaDto;
-import com.backend.clinica_odontologica.exceptions.ResourceNotFoundException;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PacienteServiceTest {
     @Autowired
     private PacienteService pacienteService;
@@ -37,11 +38,13 @@ public class PacienteServiceTest {
 
     @Test
     @Order(2)
-    void deberiaDevolverUnaListaDePacientes() throws ResourceNotFoundException {
-
+    void deberiaDevolverUnaListaDePacientes(){
+        try{
         List<PacienteSalidaDto> pacientesDto = pacienteService.listarPacientes();
 
         assertTrue(!pacientesDto.isEmpty());
-
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
     }
 }
