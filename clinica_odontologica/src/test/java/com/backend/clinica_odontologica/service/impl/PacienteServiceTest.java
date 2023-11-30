@@ -2,6 +2,7 @@ package com.backend.clinica_odontologica.service.impl;
 import com.backend.clinica_odontologica.dto.entrada.paciente.DomicilioEntradaDto;
 import com.backend.clinica_odontologica.dto.entrada.paciente.PacienteEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.paciente.PacienteSalidaDto;
+import com.backend.clinica_odontologica.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class PacienteServiceTest {
 
     @Test
     @Order(2)
-    void deberiaDevolverUnaListaDePacientes(){
+    void deberiaDevolverUnaListaDePacientes() throws ResourceNotFoundException {
 
         List<PacienteSalidaDto> pacientesDto = pacienteService.listarPacientes();
 

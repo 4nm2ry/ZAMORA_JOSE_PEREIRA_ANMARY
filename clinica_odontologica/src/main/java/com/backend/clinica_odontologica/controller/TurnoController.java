@@ -34,14 +34,14 @@ public class TurnoController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<TurnoSalidaDto>> listarTurnos() {
+    public ResponseEntity<List<TurnoSalidaDto>> listarTurnos() throws ResourceNotFoundException {
         return new ResponseEntity<>(turnoService.listarTurnos(), HttpStatus.OK);
     }
 
 
     //GET
     @GetMapping("{id}")
-    public ResponseEntity<TurnoSalidaDto> buscarTurnoPorId(@PathVariable Long id) {
+    public ResponseEntity<TurnoSalidaDto> buscarTurnoPorId(@PathVariable Long id) throws BadRequestException {
         return new ResponseEntity<>(turnoService.buscarTurnoPorId(id), HttpStatus.OK);
     }
 
@@ -55,7 +55,7 @@ public class TurnoController {
 
     //PUT
     @PutMapping("/actualizar")
-    public TurnoSalidaDto actualizarTurno(@RequestBody TurnoModificacionEntradaDto turno) {
+    public TurnoSalidaDto actualizarTurno(@RequestBody TurnoModificacionEntradaDto turno) throws BadRequestException {
         return turnoService.actualizarTurno(turno);
     }
 

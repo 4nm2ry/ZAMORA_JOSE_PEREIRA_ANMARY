@@ -33,18 +33,18 @@ public class PacienteController {
 
     //GET
     @GetMapping("{id}")
-    public ResponseEntity<PacienteSalidaDto> obtenerPacientePorId(@PathVariable Long id) {
+    public ResponseEntity<PacienteSalidaDto> obtenerPacientePorId(@PathVariable Long id) throws BadRequestException {
         return new ResponseEntity<>(pacienteService.buscarPacientePorId(id), HttpStatus.OK);
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<PacienteSalidaDto>> listarPacientes() {
+    public ResponseEntity<List<PacienteSalidaDto>> listarPacientes() throws ResourceNotFoundException {
         return new ResponseEntity<>(pacienteService.listarPacientes(), HttpStatus.OK);
     }
 
     //PUT
     @PutMapping("/actualizar")
-    public PacienteSalidaDto actualizarPaciente(@RequestBody PacienteModificacionEntradaDto paciente) {
+    public PacienteSalidaDto actualizarPaciente(@RequestBody PacienteModificacionEntradaDto paciente) throws BadRequestException {
         return pacienteService.actualizarPaciente(paciente);
     }
 

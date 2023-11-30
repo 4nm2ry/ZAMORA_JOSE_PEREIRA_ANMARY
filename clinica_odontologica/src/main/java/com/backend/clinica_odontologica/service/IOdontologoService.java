@@ -5,16 +5,17 @@ import com.backend.clinica_odontologica.dto.modificacion.OdontologoModificacionE
 import com.backend.clinica_odontologica.dto.salida.odontologo.OdontologoSalidaDto;
 import com.backend.clinica_odontologica.entity.Odontologo;
 import com.backend.clinica_odontologica.exceptions.BadRequestException;
+import com.backend.clinica_odontologica.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 
 public interface IOdontologoService {
     OdontologoSalidaDto registrarOdontologo(OdontologoEntradaDto odontologo) throws BadRequestException;
 
-    List<OdontologoSalidaDto> listarOdontologos();
-    OdontologoSalidaDto buscarOdontologoPorId(Long id);
-    OdontologoSalidaDto actualizarOdontologo(OdontologoModificacionEntradaDto odontologoModificacionEntradaDto);
+    List<OdontologoSalidaDto> listarOdontologos() throws ResourceNotFoundException;
+    OdontologoSalidaDto buscarOdontologoPorId(Long id) throws BadRequestException;
+    OdontologoSalidaDto actualizarOdontologo(OdontologoModificacionEntradaDto odontologoModificacionEntradaDto) throws ResourceNotFoundException;
 
-    void eliminarOdontologo(Long id);
+    void eliminarOdontologo(Long id) throws BadRequestException;
 
 }

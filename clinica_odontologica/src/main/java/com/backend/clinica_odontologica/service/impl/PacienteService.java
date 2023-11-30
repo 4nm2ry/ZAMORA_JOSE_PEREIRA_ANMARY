@@ -43,28 +43,32 @@ import java.util.List;
                 throw new BadRequestException("No se ha registrado el paciente");
             }
         }
-        public List<PacienteSalidaDto> listarPacientes(){
+        public List<PacienteSalidaDto> listarPacientes() throws ResourceNotFoundException{
             List<PacienteSalidaDto> pacientesSalidaDto = pacienteRepository.findAll()
                     .stream()
                     .map(paciente -> modelMapper.map(paciente, PacienteSalidaDto.class))
                     .toList();
-            LOGGER.info("Listado de todos los pacientes: {}", pacientesSalidaDto);
+            if (LOGGER.isInfoEnabled())
+                if(pacientesSalidaDto.size() == 0){
+                    throw new ResourceNotFoundException("No existen pacientes");
+                }
+            LOGGER.info("Listado de todos los pacientes: {}", JsonPrinter.toString(pacientesSalidaDto));
             return pacientesSalidaDto;
         }
         @Override
-        public PacienteSalidaDto buscarPacientePorId(Long id) {
+        public PacienteSalidaDto buscarPacientePorId(Long id) throws BadRequestException {
             Paciente pacienteBuscado = pacienteRepository.findById(id).orElse(null);
             PacienteSalidaDto pacienteEncontrado = null;
 
             if(pacienteBuscado != null){
                 pacienteEncontrado =  modelMapper.map(pacienteBuscado, PacienteSalidaDto.class);
                 LOGGER.info("Paciente encontrado: {}", pacienteEncontrado);
+               return pacienteEncontrado;
             } else LOGGER.error("El id no se encuentra registrado en la base de datos");
-
-            return pacienteEncontrado;
+            throw new BadRequestException("No se ha encontrado el paciente con id " + id);
         }
         @Override
-        public PacienteSalidaDto actualizarPaciente(PacienteModificacionEntradaDto paciente) {
+        public PacienteSalidaDto actualizarPaciente(PacienteModificacionEntradaDto paciente) throws BadRequestException {
             Paciente pacienteRecibido = modelMapper.map(paciente, Paciente.class);
             Paciente pacienteAActualizar = pacienteRepository.findById(pacienteRecibido.getId()).orElse(null);
 
@@ -79,7 +83,7 @@ import java.util.List;
 
             } else {
                 LOGGER.error("No fue posible actualizar el paciente porque no se encuentra en nuestra base de datos");
-                //lanzar excepcion correspondiente
+                throw new BadRequestException("No fue posible actualizar el Odontologo porque no se encuentra en la base de datos");
             }
 
 

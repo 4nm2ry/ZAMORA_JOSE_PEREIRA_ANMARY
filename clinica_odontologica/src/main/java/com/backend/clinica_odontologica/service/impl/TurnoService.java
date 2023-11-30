@@ -40,12 +40,16 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public List<TurnoSalidaDto> listarTurnos() {
+    public List<TurnoSalidaDto> listarTurnos() throws ResourceNotFoundException {
         List<TurnoSalidaDto> turnosSalidaDto = turnoRepository.findAll()
                 .stream()
                 .map(turno -> modelMapper.map(turno, TurnoSalidaDto.class))
                 .toList();
-        LOGGER.info("Listado de todos los turnos: {}", turnosSalidaDto);
+        if (LOGGER.isInfoEnabled())
+            if(turnosSalidaDto.size() == 0){
+                throw new ResourceNotFoundException("No existen turnos");
+            }
+        LOGGER.info("Listado de todos los turnos: {}", JsonPrinter.toString(turnosSalidaDto));
         return turnosSalidaDto;
     }
 
@@ -75,16 +79,16 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoSalidaDto buscarTurnoPorId(Long id) {
+    public TurnoSalidaDto buscarTurnoPorId(Long id) throws BadRequestException {
         Turno turnoBuscado = turnoRepository.findById(id).orElse(null);
         TurnoSalidaDto turnoEncontrado = null;
 
         if(turnoBuscado != null){
             turnoEncontrado =  modelMapper.map(turnoBuscado, TurnoSalidaDto.class);
             LOGGER.info("Turno encontrado: {}", turnoEncontrado);
+            return turnoEncontrado;
         } else LOGGER.error("El id no se encuentra registrado en la base de datos");
-
-        return turnoEncontrado;
+        throw new BadRequestException("No se ha encontrado el turno con id " + id);
     }
 
     @Override
@@ -99,7 +103,7 @@ public class TurnoService implements ITurnoService {
     }
 
     @Override
-    public TurnoSalidaDto actualizarTurno(TurnoModificacionEntradaDto turnoModificacionEntradaDto) {
+    public TurnoSalidaDto actualizarTurno(TurnoModificacionEntradaDto turnoModificacionEntradaDto) throws BadRequestException {
         Turno turnoRecibido = modelMapper.map(turnoModificacionEntradaDto, Turno.class);
         Turno turnoAActualizar = turnoRepository.findById(turnoRecibido.getId()).orElse(null);
 
@@ -114,7 +118,7 @@ public class TurnoService implements ITurnoService {
 
         } else {
             LOGGER.error("No fue posible actualizar el turno porque no se encuentra en nuestra base de datos");
-            //lanzar excepcion correspondiente
+            throw new BadRequestException("No fue posible actualizar el Turno porque no se encuentra en la base de datos");
         }
 
 

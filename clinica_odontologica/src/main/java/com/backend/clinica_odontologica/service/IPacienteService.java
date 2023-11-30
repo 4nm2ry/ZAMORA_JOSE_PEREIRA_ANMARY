@@ -12,11 +12,11 @@ import java.util.List;
 public interface IPacienteService {
     PacienteSalidaDto registrarPaciente(PacienteEntradaDto paciente) throws BadRequestException;
 
-    List<PacienteSalidaDto> listarPacientes();
+    List<PacienteSalidaDto> listarPacientes() throws ResourceNotFoundException;
 
-    PacienteSalidaDto buscarPacientePorId(Long id);
+    PacienteSalidaDto buscarPacientePorId(Long id) throws BadRequestException;
 
-    PacienteSalidaDto actualizarPaciente(PacienteModificacionEntradaDto paciente);
+    PacienteSalidaDto actualizarPaciente(PacienteModificacionEntradaDto paciente) throws BadRequestException;
 
     void eliminarPaciente(Long id) throws ResourceNotFoundException;
 

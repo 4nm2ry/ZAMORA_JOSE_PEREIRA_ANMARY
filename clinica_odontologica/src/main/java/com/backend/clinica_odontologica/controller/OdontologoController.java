@@ -4,6 +4,7 @@ import com.backend.clinica_odontologica.dto.entrada.odontologo.OdontologoEntrada
 import com.backend.clinica_odontologica.dto.modificacion.OdontologoModificacionEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.odontologo.OdontologoSalidaDto;
 import com.backend.clinica_odontologica.exceptions.BadRequestException;
+import com.backend.clinica_odontologica.exceptions.ResourceNotFoundException;
 import com.backend.clinica_odontologica.service.IOdontologoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,22 +29,22 @@ public class OdontologoController {
 
 
     @GetMapping("{id}")
-    public ResponseEntity<OdontologoSalidaDto> obtenerOdontologoPorId(@PathVariable Long id) {
+    public ResponseEntity<OdontologoSalidaDto> obtenerOdontologoPorId(@PathVariable Long id) throws BadRequestException {
         return new ResponseEntity<>(odontologoService.buscarOdontologoPorId(id), HttpStatus.OK);
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<OdontologoSalidaDto>> listarOdontologos() {
+    public ResponseEntity<List<OdontologoSalidaDto>> listarOdontologos() throws ResourceNotFoundException {
         return new ResponseEntity<>(odontologoService.listarOdontologos(), HttpStatus.OK);
     }
 
     @PutMapping("/actualizar")
-    public OdontologoSalidaDto actualizarOdontologo(@RequestBody OdontologoModificacionEntradaDto odontologo) {
+    public OdontologoSalidaDto actualizarOdontologo(@RequestBody OdontologoModificacionEntradaDto odontologo) throws ResourceNotFoundException {
         return odontologoService.actualizarOdontologo(odontologo);
     }
 
     @DeleteMapping("eliminar/{id}")
-    public ResponseEntity<?> eliminarOdontologo(@PathVariable Long id)  {
+    public ResponseEntity<?> eliminarOdontologo(@PathVariable Long id) throws BadRequestException {
         odontologoService.eliminarOdontologo(id);
         return new ResponseEntity<>("Odontologo eliminado correctamente", HttpStatus.OK);
     }
