@@ -47,4 +47,16 @@ public class PacienteServiceTest {
             exception.printStackTrace();
         }
     }
+
+    @Test
+    @Order(3)
+    void deberiaBuscarUnPacienteYRetornarElId(){
+        try{
+            PacienteSalidaDto pacienteSalidaDto = pacienteService.buscarPacientePorId(1L);
+            assertNotNull(pacienteSalidaDto.getId());
+
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
+    }
 }

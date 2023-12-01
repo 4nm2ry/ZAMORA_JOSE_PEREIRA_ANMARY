@@ -2,6 +2,7 @@ package com.backend.clinica_odontologica.service.impl;
 
 import com.backend.clinica_odontologica.dto.entrada.odontologo.OdontologoEntradaDto;
 import com.backend.clinica_odontologica.dto.salida.odontologo.OdontologoSalidaDto;
+import com.backend.clinica_odontologica.dto.salida.paciente.PacienteSalidaDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -46,6 +47,18 @@ public class OdontologoServiceTest {
         List<OdontologoSalidaDto> odontologosDto = odontologoService.listarOdontologos();
 
         assertFalse(odontologosDto.isEmpty());
+
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
+    }
+
+    @Test
+    @Order(3)
+    void deberiaBuscarUnOdontologoYRetornarElId(){
+        try{
+            OdontologoSalidaDto odontologoSalidaDto = odontologoService.buscarOdontologoPorId(1L);
+            assertNotNull(odontologoSalidaDto.getId());
 
         } catch (Exception exception){
             exception.printStackTrace();

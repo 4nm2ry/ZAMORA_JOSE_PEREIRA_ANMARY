@@ -1,5 +1,6 @@
 package com.backend.clinica_odontologica.service.impl;
 import com.backend.clinica_odontologica.dto.entrada.turno.TurnoEntradaDto;
+import com.backend.clinica_odontologica.dto.salida.odontologo.OdontologoSalidaDto;
 import com.backend.clinica_odontologica.dto.salida.turno.TurnoSalidaDto;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -42,6 +43,18 @@ public class TurnoServiceTest {
         List<TurnoSalidaDto> turnosDto = turnoService.listarTurnos();
 
         assertFalse(turnosDto.isEmpty());
+        } catch (Exception exception){
+            exception.printStackTrace();
+        }
+    }
+
+    @Test
+    @Order(3)
+    void deberiaBuscarUnOdontologoYRetornarElId(){
+        try{
+            TurnoSalidaDto turnoSalidaDto = turnoService.buscarTurnoPorId(1L);
+            assertNotNull(turnoSalidaDto.getId());
+
         } catch (Exception exception){
             exception.printStackTrace();
         }
